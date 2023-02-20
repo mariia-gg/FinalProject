@@ -12,7 +12,6 @@ public class Admin : BaseEntity, IEntity
 
     public ICollection<Movie> Movies { get; set; }
 
-    public ICollection<Login> Logins { get; set; }
 
     public ICollection<MovieGenre> MovieGenres { get; set; }
 }

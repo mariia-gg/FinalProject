@@ -2,6 +2,7 @@
 using Infrastructure.IdentityService;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,9 +17,6 @@ public class ConfigureServices
         IConfiguration configuration
     )
     {
-        //services.AddScoped<AuditableEntitySaveChangesInterceptor>();
-        // services.UseSqlServer("ThisIsJustForMigrations");
-
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
         {
             services.AddDbContext<AuthorizationDbContext>(options =>
@@ -31,10 +29,15 @@ public class ConfigureServices
                     builder => builder.MigrationsAssembly(typeof(AuthorizationDbContext).Assembly.FullName)));
         }
 
-        //services.AddDbContext<ApplicationDbContext>(options =>
-        //options.UseSqlServer(GetConnectionString("DefaultConnection")));
+        //Authentication and authorization
+        services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AuthorizationDbContext>();
+        services.AddMemoryCache();
+        services.AddSession();
 
-        // services.AddScoped<IApplicationDbContext>(provider => provider.GetRequiredService<ApplicationDbContext>());
+        services.AddAuthentication(options =>
+        {
+            options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        });
 
         services.AddScoped<ApplicationDbContextInitialiser>();
 
@@ -43,12 +46,7 @@ public class ConfigureServices
             .AddRoles<IdentityRole>()
             .AddEntityFrameworkStores<AuthorizationDbContext>();
 
-        // services.AddIdentityServer()
-        //  .AddApiAuthorization<ApplicationUser, ApplicationDbContext>();
-
-        //services.AddTransient<IDateTime, DateTimeService>();
         services.AddTransient<IIdentityService, IdentityService.IdentityService>();
-        // services.AddTransient<ICsvFileBuilder, CsvFileBuilder>();
 
         services.AddAuthentication()
             .AddIdentityServerJwt();

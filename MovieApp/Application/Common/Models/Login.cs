@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Domain.Entities;
 
-namespace Domain.Entities;
+namespace Application.Common.Entities;
 
 public class Login : BaseEntity, IEntity
 {

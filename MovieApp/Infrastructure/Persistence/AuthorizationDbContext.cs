@@ -24,7 +24,6 @@ public class AuthorizationDbContext : IdentityDbContext<IdentityUser>
     {
     }
 
-
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.EnableSensitiveDataLogging();
