@@ -19,18 +19,21 @@ public class ConfigureServices
     {
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
         {
-            services.AddDbContext<AuthorizationDbContext>(options =>
+            services.AddDbContext<DefaultDbContext>(options =>
                 options.UseInMemoryDatabase("MovieAppDb"));
         }
         else
         {
-            services.AddDbContext<AuthorizationDbContext>(options =>
+            services.AddDbContext<DefaultDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    builder => builder.MigrationsAssembly(typeof(AuthorizationDbContext).Assembly.FullName)));
+                    builder => builder.MigrationsAssembly(typeof(DefaultDbContext).Assembly.FullName)));
         }
 
+        //Swagger 
+        services.AddSwaggerGen();
+
         //Authentication and authorization
-        services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<AuthorizationDbContext>();
+        services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<DefaultDbContext>();
         services.AddMemoryCache();
         services.AddSession();
 
@@ -44,7 +47,7 @@ public class ConfigureServices
         services
             .AddDefaultIdentity<ApplicationUser>()
             .AddRoles<IdentityRole>()
-            .AddEntityFrameworkStores<AuthorizationDbContext>();
+            .AddEntityFrameworkStores<DefaultDbContext>();
 
         services.AddTransient<IIdentityService, IdentityService.IdentityService>();
 
@@ -54,7 +57,7 @@ public class ConfigureServices
         services.AddAuthorization(options =>
             options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator")));
 
-        services.AddDbContext<AuthorizationDbContext>();
+        services.AddDbContext<DefaultDbContext>();
 
         return services;
     }

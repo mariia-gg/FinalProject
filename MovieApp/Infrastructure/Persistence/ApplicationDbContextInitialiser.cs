@@ -2,7 +2,7 @@
 
 public class ApplicationDbContextInitialiser
 {
-    public static void Initialize(AuthorizationDbContext context)
+    public static void Initialize(DefaultDbContext context)
     {
         context.Database.EnsureCreated();
     }

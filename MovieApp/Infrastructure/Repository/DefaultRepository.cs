@@ -7,11 +7,11 @@ namespace Infrastructure.Repository;
 
 public class DefaultRepository<T> : IRepository<T> where T : class, IEntity
 {
-    private readonly AuthorizationDbContext _dbContext;
+    private readonly DefaultDbContext _dbContext;
 
     protected DbSet<T> Table => _dbContext.Set<T>();
 
-    public DefaultRepository(AuthorizationDbContext dbContext) => _dbContext = dbContext;
+    public DefaultRepository(DefaultDbContext dbContext) => _dbContext = dbContext;
 
     public virtual async Task DeleteAsync(Guid id, CancellationToken cancellationToken)
     {

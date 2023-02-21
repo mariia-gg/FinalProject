@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence;
 
-public class AuthorizationDbContext : IdentityDbContext<IdentityUser>
+public class DefaultDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRole<Guid>, Guid>
 {
     public DbSet<Actor> Actors { get; set; }
 
@@ -16,17 +16,31 @@ public class AuthorizationDbContext : IdentityDbContext<IdentityUser>
 
     public DbSet<WishListItem> WishListItems { get; set; }
 
-    public AuthorizationDbContext(DbContextOptions<AuthorizationDbContext> options) : base(options)
+    public DefaultDbContext(DbContextOptions<DefaultDbContext> options) : base(options)
     {
     }
 
-    public AuthorizationDbContext()
+    public DefaultDbContext()
     {
     }
 
+    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //{
+    //    optionsBuilder.EnableSensitiveDataLogging();
+
+    //    base.OnConfiguring(optionsBuilder);
+    //}
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
+        if (!optionsBuilder.IsConfigured)
+        {
+            optionsBuilder.UseSqlServer(
+                "Server=localhost;Database=MovieSite;Trusted_Connection=True;TrustServerCertificate=True");
+        }
+
+        #if DEBUG
         optionsBuilder.EnableSensitiveDataLogging();
+        #endif
 
         base.OnConfiguring(optionsBuilder);
     }

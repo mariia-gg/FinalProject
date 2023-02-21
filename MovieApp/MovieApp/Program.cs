@@ -1,5 +1,4 @@
 using Infrastructure.Persistence;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 public class Program
@@ -11,47 +10,60 @@ public class Program
 
         builder.Services.AddControllersWithViews();
 
-        builder.Services.AddDbContext<AuthorizationDbContext>(options =>
-            options.UseSqlServer(configuration.GetConnectionString("ConnStr")));
+        builder.Services.AddDbContext<DefaultDbContext>(options =>
+            options.UseSqlServer(configuration.GetConnectionString("Default")));
 
-        builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-            .AddEntityFrameworkStores<AuthorizationDbContext>()
-            .AddDefaultTokenProviders();
+        //builder.Services.AddAuthentication(options =>
+        //    {
+        //        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        //        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        //        options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        //    })
 
+        // Adding Jwt Bearer
+        //.AddJwtBearer(options =>
+        //{
+        //    options.SaveToken = true;
+        //    options.RequireHttpsMetadata = false;
+
+        //    options.TokenValidationParameters = new TokenValidationParameters
+        //    {
+        //        ValidateIssuer = true,
+        //        ValidateAudience = true,
+        //        ValidAudience = configuration["JWT:ValidAudience"],
+        //        ValidIssuer = configuration["JWT:ValidIssuer"],
+        //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]))
+        //    };
+        //});
+
+        // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
         builder.Services.AddControllers();
 
         builder.Services.AddEndpointsApiExplorer();
 
         var app = builder.Build();
 
+        // Configure the HTTP request pipeline.
         if (!app.Environment.IsDevelopment())
         {
+            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+            app.UseSwagger();
+            app.UseSwaggerUI();
             app.UseHsts();
         }
 
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
-        {
-            //app.UseSwaggerUI();
-            app.UseSwaggerUI();
-        }
-
-        app.MapControllers().RequireAuthorization();
-
-        app.UseAuthentication();
-        app.UseRouting();
-        app.UseAuthorization();
-        app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
-
         app.UseHttpsRedirection();
         app.UseStaticFiles();
+
         app.UseRouting();
+
+        app.UseAuthorization();
 
         app.MapControllerRoute(
             "default",
-            "{controller}/{action=Index}/{id?}");
-
-        app.MapFallbackToFile("index.html");
+            "{controller=Home}/{action=Index}/{id?}");
 
         app.Run();
     }
