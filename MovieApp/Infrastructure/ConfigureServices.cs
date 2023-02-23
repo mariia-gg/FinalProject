@@ -1,9 +1,11 @@
 ﻿using Application.Common.Interfaces;
 using Infrastructure.IdentityService;
 using Infrastructure.Persistence;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,7 +16,10 @@ public class ConfigureServices
 {
     public static IServiceCollection AddInfrastructureServices(
         IServiceCollection services,
-        IConfiguration configuration
+        IConfiguration configuration,
+        IApplicationBuilder app,
+        IWebHostEnvironment env,
+        IApiVersionDescriptionProvider provider
     )
     {
         if (configuration.GetValue<bool>("UseInMemoryDatabase"))
@@ -42,6 +47,19 @@ public class ConfigureServices
             options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         });
 
+        //services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //    .AddJwtBearer(options =>
+        //    {
+        //        options.Authority = configuration["Authentication:Authority"];
+        //        options.Audience = configuration["Authentication:Audience"];
+        //    });
+
+        services.AddAuthorization(options =>
+        {
+            options.AddPolicy("AdminOnly", policy =>
+                policy.RequireRole("admin"));
+        });
+
         services.AddScoped<ApplicationDbContextInitialiser>();
 
         services
@@ -51,8 +69,8 @@ public class ConfigureServices
 
         services.AddTransient<IIdentityService, IdentityService.IdentityService>();
 
-        services.AddAuthentication()
-            .AddIdentityServerJwt();
+        //services.AddAuthentication()
+        //    .AddIdentityServerJwt();
 
         services.AddAuthorization(options =>
             options.AddPolicy("CanPurge", policy => policy.RequireRole("Administrator")));

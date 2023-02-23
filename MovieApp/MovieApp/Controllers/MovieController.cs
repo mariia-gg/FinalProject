@@ -12,10 +12,10 @@ public class MovieController : ControllerBase
 {
     private DefaultDbContext _context;
 
-    [HttpGet]
-    public ActionResult<IEnumerable<Movie>> GetMovies() => _context.Movies.ToList();
+    //[HttpGet]
+    //public ActionResult<IEnumerable<Movie>> GetMovies() => _context.Movies.ToList();
 
-    [HttpGet]
+
     [HttpGet("{id}")]
     public ActionResult<Movie> GetMovie(int id)
     {
@@ -60,3 +60,4 @@ public class MovieController : ControllerBase
         return movie;
     }
 }
+

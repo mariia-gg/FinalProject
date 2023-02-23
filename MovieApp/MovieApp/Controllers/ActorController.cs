@@ -7,7 +7,7 @@ namespace MovieApp.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ActorController : Controller
+public class ActorController : ControllerBase
 {
     private readonly DefaultDbContext _context;
 

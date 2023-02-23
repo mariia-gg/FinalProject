@@ -10,9 +10,9 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace MovieApp.Controllers;
 
+[Route("api/[controller]")]
 [ApiController]
-[Route("[controller]")]
-public class AuthenticateController : Controller
+public class AuthenticateController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;

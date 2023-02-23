@@ -16,9 +16,9 @@ public class MovieGenreController : ControllerBase
     public MovieGenreController(DefaultDbContext context) => _context = context;
 
     // GET: api/MovieGenre
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<MovieGenre>>> GetMovieGenres() =>
-        await _context.MovieGenres.ToListAsync();
+    //[HttpGet]
+    //public async Task<ActionResult<IEnumerable<MovieGenre>>> GetMovieGenres() =>
+    //    await _context.MovieGenres.ToListAsync();
 
     // GET: api/MovieGenre/5
     [HttpGet("{id}")]
@@ -97,3 +97,4 @@ public class MovieGenreController : ControllerBase
         return _context.MovieGenres.Any(e => e.Id == id);
     }
 }
+

@@ -15,9 +15,9 @@ public class WishListItemControllerf : ControllerBase
 
     public WishListItemControllerf(DefaultDbContext context) => _context = context;
 
-    // GET: api/Cart
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<WishListItem>>> GetCarts() => await _context.WishListItems.ToListAsync();
+    //// GET: api/Cart
+    //[HttpGet]
+    //public async Task<ActionResult<IEnumerable<WishListItem>>> GetCarts() => await _context.WishListItems.ToListAsync();
 
     // GET: api/Cart/5
     [HttpGet("{id}")]
@@ -96,3 +96,4 @@ public class WishListItemControllerf : ControllerBase
         return _context.WishListItems.Any(e => e.Id == id);
     }
 }
+

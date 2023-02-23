@@ -24,12 +24,6 @@ public class DefaultDbContext : IdentityDbContext<IdentityUser<Guid>, IdentityRo
     {
     }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //{
-    //    optionsBuilder.EnableSensitiveDataLogging();
-
-    //    base.OnConfiguring(optionsBuilder);
-    //}
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)

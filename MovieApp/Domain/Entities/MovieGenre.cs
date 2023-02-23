@@ -1,6 +1,6 @@
 ﻿namespace Domain.Entities;
 
-public class MovieGenre : BaseEntity, IEntity
+public class MovieGenre : BaseEntity
 {
     public Guid MovieId { get; set; }
 

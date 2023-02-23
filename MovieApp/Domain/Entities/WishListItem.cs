@@ -10,6 +10,7 @@ public class WishListItem : BaseEntity, IEntity
     [ForeignKey("UserId")]
     public Guid UserId { get; set; }
 
+    public string MovieTitle { get; set; }
     // TODO: create user property when library will be added 
 
     public Movie? Movie { get; set; }
