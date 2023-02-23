@@ -13,6 +13,7 @@ public class ActorController : ControllerBase
 
     public ActorController(DefaultDbContext context) => _context = context;
 
+
     // GET: api/Actor
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Actor>>> GetActors() => await _context.Actors.ToListAsync();

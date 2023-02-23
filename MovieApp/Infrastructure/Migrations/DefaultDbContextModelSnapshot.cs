@@ -45,7 +45,7 @@ namespace Infrastructure.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<Guid>("MoviesId")
+                    b.Property<Guid?>("MovieId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProfilePictureUrl")
@@ -58,7 +58,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MoviesId");
+                    b.HasIndex("MovieId");
 
                     b.ToTable("Actors", "dbo");
                 });
@@ -108,9 +108,6 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
-
-                    b.Property<Guid?>("ActorId")
-                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Adventure")
                         .IsRequired()
@@ -170,8 +167,6 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ActorId");
-
                     b.ToTable("MovieGenres", "dbo");
                 });
 
@@ -187,6 +182,10 @@ namespace Infrastructure.Migrations
 
                     b.Property<Guid>("MovieId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("MovieTitle")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
@@ -415,20 +414,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Actor", b =>
                 {
-                    b.HasOne("Domain.Entities.Movie", "Movies")
+                    b.HasOne("Domain.Entities.Movie", null)
                         .WithMany("Actors")
-                        .HasForeignKey("MoviesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Movies");
-                });
-
-            modelBuilder.Entity("Domain.Entities.MovieGenre", b =>
-                {
-                    b.HasOne("Domain.Entities.Actor", null)
-                        .WithMany("MovieGenres")
-                        .HasForeignKey("ActorId");
+                        .HasForeignKey("MovieId");
                 });
 
             modelBuilder.Entity("Domain.Entities.WishListItem", b =>
@@ -506,11 +494,6 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Actor", b =>
-                {
-                    b.Navigation("MovieGenres");
                 });
 
             modelBuilder.Entity("Domain.Entities.Movie", b =>

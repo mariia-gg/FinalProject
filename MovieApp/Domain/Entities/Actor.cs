@@ -19,7 +19,7 @@ public class Actor : BaseEntity, IEntity
     [Required(ErrorMessage = "Biography is required")]
     public string Bio { get; set; } = string.Empty;
 
-    public Movie Movies { get; set; }
+    //public Movie Movies { get; set; }
 
-    public ICollection<MovieGenre> MovieGenres { get; set; }
+    //public ICollection<MovieGenre> MovieGenres { get; set; }
 }
